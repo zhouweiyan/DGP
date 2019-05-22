@@ -1,3 +1,3 @@
 # mtgp-v1.4
 
-MTGP - A 
+MTGP - A multi-task gaussian process
