@@ -3,11 +3,8 @@
 %
 % by Robert Duerichen
 % 18/11/2013
-% add case3: consider the noise parameter
-% ZhouWeiyan 20190523
-
 clear
-% close all; clc
+% clc
 
 path_gpml = 'E:\OneDrive - hnu.edu.cn\tools\matlabcourse\GPML_matlab\gpml-matlab-v4.2-2018-06-11';                     % please insert here path of GPML Toolbox
 
@@ -22,14 +19,12 @@ end
 
 % please uncomment one of the following cases to demonstrate the use of 
 % MTGPs with convoluted kernels
-MTGP_case = 3;
+MTGP_case = 1;
 % case1: 3 signals assuming that they are uncorrelated but with further optimization
 %           and SE cov. func with isotropic length-scale hyperparameter for
 %           all tasks
 % case2: 3 signals assuming that they are uncorrelated but with further optimization
-%           and SE cov. func with non-isotropic length-scale hyperparameter
-% case3: 3 sigmals assuming that they are uncorrelated but with further optimization
-%           and SE cov.func with non-isotropic length-scale and noise hyperparater
+%           and SE cov. func with non-isotropic length-scale hyperparameter 
 switch MTGP_case
     case 1
         opt.cov_func = 1;               % select cov. function
@@ -39,10 +34,6 @@ switch MTGP_case
         opt.se_hyp = [1 0.5 0.05];      % initial value for length scale hyperparameter
                                         % 3 squared exponential hyperpara. for 3 tasks
 %         opt.se_hyp = [1 1 1];      % initial value for length scale hyperparameter
-    case 3
-        opt.cov_func = 3;
-        opt.se_hyp = [1 0.5 0.05];
-        opt.noise_hyp = [1 2 3];
     otherwise
         error('Unknown example case. MTGP_case has to be between 1 and 2.');
 end
@@ -116,15 +107,7 @@ switch opt.cov_func
             disp('Covariance Function: K = CC(l) x (SE_conU(t))');
             covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEconU'}};
             hyp.cov(1:num_cc_hyp) = opt.cc_hyp;
-            hyp.cov(num_cc_hyp+1:num_cc_hyp+num_se_hyp) = log(opt.se_hyp);   
-            
-        case 3      % SEiso with noise hyperparameters
-            disp('Covariance Function: K = CC(l) x (SE_conU(t)) + Noise(t)');
-            covfunc_prod = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEconU'}};
-            covfunc = {'MTGP_covSum',{covfunc_prod, 'MTGP_covNoise'}};
-            hyp.cov(1:num_cc_hyp) = opt.cc_hyp;
-            hyp.cov(num_cc_hyp+1:num_cc_hyp+num_se_hyp) = log(opt.se_hyp); 
-            hyp.cov(num_cc_hyp+num_se_hyp+1:num_cc_hyp+num_se_hyp+num_dim) = log(sqrt(opt.noise_hyp));
+            hyp.cov(num_cc_hyp+1:num_cc_hyp+num_se_hyp) = log(opt.se_hyp);            
 end
 
 % likelihood function
