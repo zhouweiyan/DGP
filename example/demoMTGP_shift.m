@@ -45,7 +45,7 @@ else
     % generate synthetic data for case 3
     translation = [0.15 -0.26];
     x = (-0.5:0.1:0.5)';
-    y = (-0.5:0.1:0.5)';
+    y = (-0.4:0.06:0.6)';
     f = 1;
     x_mat = repmat(x,[1 length(y)]);
     y_mat = repmat(y,[1 length(x)]);
@@ -256,24 +256,26 @@ if opt.show == 1
         zlim([-1.1 1.1]);
         hold on
         plot3(x_train(x_train(:,3)==1,1),x_train(x_train(:,3)==1,2),z_train(x_train(:,3)==1,1),'k*','Markersize',8,'Linewidth',2);
-        surface(x-translation(1),y-translation(2),z1);
+        surface(x_mat-translation(1), y_mat-translation(2),z1)
         xlabel('Dim 1');
         ylabel('Dim 2');
-        title('Task 1');
+        title({'Task 1';[': RMSE_{train}: ',num2str(results.rmse_train(1)),...
+            ' - RMSE_{test}: ',num2str(results.rmse_test(1))]});
         hold on;
         legend('training points task 1')
-        subplot(2,1,2);
         
+        subplot(2,1,2);
         xlim([-0.8 0.8]);
         ylim([-0.8 0.8]);
         zlim([-1.1 1.1]);
         hold on
         plot3(x_train(x_train(:,3)==2,1)',x_train(x_train(:,3)==2,2)',z_train(x_train(:,3)==2,1)','k*','Markersize',10,'Linewidth',2);
-        surface(x,y,z2');
+        surface(x_mat, y_mat,z2);%surface(x,y,z2');
         colormap(jet);
         xlabel('Dim 1');
         ylabel('Dim 2');
-        title(['Task 2 - shifted by dim1: ',num2str(results.hyp.cov(end-1)),' (true: ',num2str(-translation(1)),') / dim2: ',num2str(results.hyp.cov(end)),' (true: ',num2str(-translation(2)),')']);
+        title({['Task 2 - shifted by dim1: ',num2str(results.hyp.cov(end-1)),' (true: ',num2str(-translation(1)),') / dim2: ',num2str(results.hyp.cov(end)),' (true: ',num2str(-translation(2)),')'];
+            ['RMSE_{train}: ',num2str(results.rmse_train(2)),' - RMSE_{test}: ',num2str(results.rmse_test(2))]});
         legend('training points task 2')
     end
 end
