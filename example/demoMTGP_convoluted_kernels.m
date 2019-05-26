@@ -70,7 +70,6 @@ opt.num_rep = 1;                        % number of trails for selecting hyp
 opt.cc_hyp = [1 0 1 0 0 1];             % assumes that all signals are independent
 opt.noise_lik = 0.1;                    % inital noise hyperparameter
 
-
 num_dim = size(opt.training_data,2);
 num_cc_hyp = sum(1:size(opt.training_data,2));
 num_se_hyp = length(opt.se_hyp);

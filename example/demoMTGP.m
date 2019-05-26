@@ -21,7 +21,7 @@ clear; %clc
 load('test_data.mat');
 
 % please select one of the following cases to demonstrate the use of MTGPs: (1-5)
-MTGP_case = 5;
+MTGP_case = 1;
 % case1: 2 signals, assuming that they are uncorrelated, no optimization is
 %           done and k_t = SE cov. func
 % case2: 2 signals, assuming that they are uncorrelated but with further optimization

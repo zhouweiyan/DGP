@@ -1,4 +1,4 @@
-function [gamma_n Kc_n] = normalize_Kc(gamma,dim)
+function [gamma_n, Kc_n] = normalize_Kc(gamma,dim)
 % normalize the parameters of a "free-form" covariance function Kc to [-1 1]
 %
 % inputs are the parameters of a lower triangular matrix L of size [m*k]
@@ -19,10 +19,10 @@ function [gamma_n Kc_n] = normalize_Kc(gamma,dim)
 % by Robert Duerichen
 %
 % 3/02/2014
-
+% zwy: seems wrong
 
 % check if number of valid
-num_para = [1:dim];
+num_para = 1:dim;
 if sum(num_para) ~= numel(gamma)
     error('number of parameters disagree with dimenstion');
 end
@@ -31,7 +31,7 @@ end
 L = triu(ones(dim,dim));
 [ind] = find(L(:) ==1);
  
-[ind2d(:,1) ind2d(:,2)] = find(L ~=0);
+[ind2d(:,1), ind2d(:,2)] = find(L ~=0);
 L(ind) =  gamma;
 L = L';
 

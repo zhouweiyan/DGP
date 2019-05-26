@@ -10,9 +10,9 @@
 %
 % by Robert Duerichen
 % 31/01/2014
-close all; clear all
+close all; clear
 
-path_gpml = '..\..\..\gpml';                     % please insert here path of GPML Toolbox
+path_gpml = 'E:\OneDrive - hnu.edu.cn\tools\matlabcourse\GPML_matlab\gpml-matlab-v4.2-2018-06-11';                     % please insert here path of GPML Toolbox
 
 % add folders of MTGP and GPML Toolbox
 if ~isunix  % windows system
@@ -26,14 +26,14 @@ end
 phase_shift = 0;                % phase shift between the two signals
 scale1 = 1;                     % amplitude of signal 1
 scale2 = 2;                     % amplitude of signal 2
-scaling_factor = [0.001 0.005 0.01 0.05 0.1 0.5 1]             
+scaling_factor = [0.001 0.005 0.01 0.05 0.1 0.5 1];             
                                 % scaling factor of the noise component
 
 
 %% options for MTGP
 opt.init_num_opt = 200; 
-opt.training_data{1} = [1:50];  % index of know training points of signal 1
-opt.training_data{2} = [1:50];  % index of know training points of signal 2
+opt.training_data{1} = 1:50;    % index of know training points of signal 1
+opt.training_data{2} = 1:50;    % index of know training points of signal 2
 
 %% initial parameter
 opt.show = 1;                   % show result plot
@@ -56,7 +56,7 @@ random_bounds.noise = [0,1];                    % define bounds for random estim
 %% loop over scaling factors
 for count = 1:length(scaling_factor)
     % generate data with noise
-    t = [0:0.05:10]';               
+    t = (0:0.05:10)';               
     y1 = scale1*sin(2*pi*t)+randn([length(t),1])*(scaling_factor(count));
     y2 = scale2*sin(2*pi*t+phase_shift)+randn([length(t),1])*(scaling_factor(count));
 
@@ -70,7 +70,7 @@ for count = 1:length(scaling_factor)
         ones(length(opt.training_data{1}),1)];
 
     y_train_mean(1) = mean(y(opt.training_data{1},1));
-    y_train = [y(opt.training_data{1},1)-y_train_mean(1)];
+    y_train = y(opt.training_data{1},1)-y_train_mean(1);
 
     x_test = [t(opt.start:opt.end) ones(opt.end-opt.start+1,1)];
     y_test = y(opt.start:opt.end,1)-y_train_mean(1);
@@ -124,11 +124,11 @@ for count = 1:length(scaling_factor)
     end
     
     % find best  nlml
-    [results.nlml best_hyp] = min(results.nlml);
+    [results.nlml, best_hyp] = min(results.nlml);
     results.hyp = results.hyp{best_hyp};
 
     %% perform prediction
-    [results.m results.s2 fmu fs2 results.p] = MTGP(results.hyp, @infExact, [], covfunc, likfunc, x_train, y_train, x_test, y_test);
+    [results.m, results.s2, fmu, fs2, results.p] = MTGP(results.hyp, @MTGP_infExact, [], covfunc, likfunc, x_train, y_train, x_test, y_test);
 
     % reshape of results
     results.m = reshape(results.m,[opt.end-opt.start+1 num_dim]);
@@ -152,7 +152,7 @@ for count = 1:length(scaling_factor)
     end
 
     % compute resulting K_f matrix
-    vec_dim = [1:num_dim];
+    vec_dim = 1:num_dim;
     L = zeros(num_dim,num_dim);
     for cnt_dim = 1:num_dim
         L(cnt_dim,1:vec_dim(cnt_dim)) = [results.hyp.cov(sum(vec_dim(1:cnt_dim-1))+1:sum(vec_dim(1:cnt_dim-1))+vec_dim(cnt_dim))];
@@ -165,7 +165,7 @@ for count = 1:length(scaling_factor)
     est_hyp(count,:) = results.hyp.cov(1:3);
     
     % normalization of K_f matrix
-    [a Kc_n]= normalize_Kc(est_hyp(count,:),num_dim);
+    [a, Kc_n]= normalize_Kc(est_hyp(count,:),num_dim);
     MTGP_cc_n(count,1) = Kc_n(2,1);
 
     % print results on console:

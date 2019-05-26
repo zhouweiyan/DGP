@@ -17,7 +17,7 @@ end
 clear; %close all
 
 % please select one of the example cases for shifting the feature space: (1-3)
-MTGP_case = 3;
+MTGP_case = 1;
 % case1: 3 signals which are phase shifted to each other, modelled by a 
 %           normal MTGP with k_t = SE covariance function
 %
