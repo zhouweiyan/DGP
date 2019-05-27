@@ -55,7 +55,7 @@ end
 if isempty(mean), mean = {@meanZero}; end                     % set default mean
 if ischar(mean) || isa(mean, 'function_handle'), mean = {mean}; end  % make cell
 if isempty(cov), error('Covariance function cannot be empty'); end  % no default
-if ischar(cov)  || isa(cov,  'function_handle'), cov  = {cov};  end  % make cell
+if ischar(cov)  || isa(cov,'function_handle'), cov  = {cov};  end  % make cell
 cov1 = cov{1}; if isa(cov1, 'function_handle'), cov1 = func2str(cov1); end
 if isempty(inf)                                   % set default inference method
   if strcmp(cov1,'covFITC'), inf = @infFITC; else inf = @infExact; end
