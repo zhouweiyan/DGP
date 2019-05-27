@@ -9,17 +9,6 @@
 clear
 % close all; clc
 
-path_gpml = 'E:\OneDrive - hnu.edu.cn\tools\matlabcourse\GPML_matlab\gpml-matlab-v4.2-2018-06-11';                     % please insert here path of GPML Toolbox
-
-% add folders of MTGP and GPML Toolbox
-if ~isunix  % windows system
-    addpath(genpath('..\..\'));
-    addpath(genpath(path_gpml));
-else        % linux system
-    addpath(genpath('../../'));
-    addpath(genpath(path_gpml));
-end
-
 % please uncomment one of the following cases to demonstrate the use of 
 % MTGPs with convoluted kernels
 MTGP_case = 2;

@@ -115,7 +115,36 @@ for cnt_dim = 2:num_dim
         y_test = [y_test; y(opt.start:opt.end,cnt_dim)-y_train_mean(cnt_dim)];  % concatenate the y of the testing datasets
 end
 
-   
+
+%% generate training and test data with labels, change the order of training dataset 
+change_order=0;
+if change_order == 1
+    x_train = [t(opt.training_data{1},1), ...
+        3*ones(length(opt.training_data{1}),1)];
+    
+    y_train_mean(1) = mean(y(opt.training_data{1},1));
+    y_train = y(opt.training_data{1},1)-y_train_mean(1);
+    
+    x_test = [t(opt.start:opt.end) 3*ones(opt.end-opt.start+1,1)];
+    y_test = y(opt.start:opt.end,1)-y_train_mean(1);    % the true value subtract the mean
+    
+    
+    for cnt_dim = 2:num_dim
+        x_train = [x_train(:,1) x_train(:,2);...    % concatenate the x of the training datasets
+            t(opt.training_data{cnt_dim},1) ...
+            ones(length(opt.training_data{cnt_dim}),1)*(4-cnt_dim)];
+        
+        y_train_mean(cnt_dim) = mean(y(opt.training_data{cnt_dim},cnt_dim));
+        y_train = [y_train; y(opt.training_data{cnt_dim},cnt_dim)-...
+            y_train_mean(cnt_dim)];                 % concatenate the y of the training datasets
+        
+        x_test = [x_test(:,1) x_test(:,2);...       % concatenate the x of the testing datasets
+            t(opt.start:opt.end) ones(opt.end-opt.start+1,1)*(4-cnt_dim)];
+        y_test = [y_test; y(opt.start:opt.end,cnt_dim)-y_train_mean(cnt_dim)];  % concatenate the y of the testing datasets
+    end
+end
+
+
 %% init covariance functions and hyperparameters
 switch opt.cov_func      
         case 1

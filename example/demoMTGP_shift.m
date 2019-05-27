@@ -17,7 +17,7 @@ end
 clear; %close all
 
 % please select one of the example cases for shifting the feature space: (1-3)
-MTGP_case = 1;
+MTGP_case = 2;
 % case1: 3 signals which are phase shifted to each other, modelled by a 
 %           normal MTGP with k_t = SE covariance function
 %
@@ -89,7 +89,8 @@ opt.num_rep = 1;                % number of trails for selecting hyp
 
 % init values for hyperparameter (if opt.random ~= 1)
 opt.se_hyp = 1;
-opt.cc_hyp = [1 1 0 1 0 0];     % assumes that all signals are dependent
+% opt.cc_hyp = [1 1 0 1 0 0];     % assumes that all signals are dependent
+opt.cc_hyp = [1 0 1 0 0 1];     % assumes that all signals are independent
 opt.noise_lik = 0.1;
 opt.shift_hyp = [0 0];
 

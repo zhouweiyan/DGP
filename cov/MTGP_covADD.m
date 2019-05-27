@@ -32,13 +32,13 @@ end
 if nargin<4, z = []; end                                   % make sure, z exists
 xeqz = isempty(z); dg = strcmp(z,'diag');                       % determine mode
 
-[n,D] = size(x(:,end-1));                                                % dimensionality x-->x(:,end-1)
+[n,D] = size(x(:,1:(end-1)));                                                % dimensionality x-->x(:,end-1)
 sf2 = exp( 2*hyp(D*nh+(1:nr)) );        % signal variances of individual degrees
 %these lines have to be added to be able to use Lab_covCC_chol_nD function
 if size(x,2) > 1
     nL = max(x(:,end));
 end
-Kd = Kdim(cov{2},hyp,x(:,end-1),z);                % evaluate dimensionwise covariances K
+Kd = Kdim(cov{2},hyp,x(:,1:(end-1)),z);                % evaluate dimensionwise covariances K
 if nargin<5                                                        % covariances
   EE = elsympol(Kd,max(R));               % Rth elementary symmetric polynomials
   K = 0; for ii=1:nr, K = K + sf2(ii)*EE(:,:,R(ii)+1); end    % sf2 weighted sum

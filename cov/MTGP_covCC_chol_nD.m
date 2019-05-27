@@ -29,6 +29,7 @@ function K = MTGP_covCC_chol_nD(hyp,x, z, i)
 %           (theta_c,k)]
 %
 % zwy: nL is the number of datasets, i.e., the number of different labels
+% k = sum([1:nL]) = (1+nL)*nL/2
 
 if nargin<2, K = ['sum([1:nL])']; return; end       % report number of parameters
 if nargin<3, z = []; end                                    % make sure, z exists
