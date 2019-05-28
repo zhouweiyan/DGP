@@ -31,12 +31,12 @@ function K = MTGP_covCC_chol_nD(hyp,x, z, i)
 % zwy: nL is the number of datasets, i.e., the number of different labels
 % k = sum([1:nL]) = (1+nL)*nL/2
 
-if nargin<2, K = ['sum([1:nL])']; return; end       % report number of parameters
+if nargin<2, K = 'sum([1:nL])'; return; end       % report number of parameters
 if nargin<3, z = []; end                                    % make sure, z exists
 xeqz = numel(z)==0; dg = strcmp(z,'diag') && numel(z)>0;    % determine mode
 
 nL = max(x(:,end));                                  % determine nLension
-cc = (hyp(1:sum([1:nL])));                                     % ini
+cc = (hyp(1:sum(1:nL)));                                     % ini
 
 % create index for hyp in matrix L
 cnt =1;

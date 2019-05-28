@@ -30,13 +30,13 @@ if nargin<3, z = []; end                                   % make sure, z exists
 xeqz = numel(z)==0; dg = strcmp(z,'diag') && numel(z)>0;        % determine mode
 
 % n = size(x,1);
-nL = max(x(:,2));                                  % get number of labels
-p   = exp(hyp(1));                                  % period 
+nL = max(x(:,end));                                % zwy: get number of labels
+p   = exp(hyp(1));                                 % period 
 shift = (hyp(2:end));                              % time shift hyp
 
 %% perform shift
 for ii = 2:nL
-   x(x(:,2)== ii,1) = x(x(:,2)== ii,1)+shift(ii-1);
+   x(x(:,end)== ii,1) = x(x(:,end)== ii,1)+shift(ii-1); % zwy
    if ~isempty(z)
        z(z(:,2)== ii,1) = z(z(:,2)== ii,1)+shift(ii-1);
    end
@@ -44,12 +44,12 @@ end
 
 % precompute distances
 if dg                                                               % vector kxx
-  K = zeros(size(x(:,1),1),1);
+  K = zeros(size(x(:,1:end-1),1),1);
 else
-  if xeqz                                                 % symmetric matrix Kxx
-    K = sqrt(sq_dist(x(:,1)'));
-  else                                                   % cross covariances Kxz
-    K = sqrt(sq_dist(x(:,1)',z(:,1)'));
+  if xeqz                                               % symmetric matrix Kxx
+    K = sqrt(sq_dist(x(:,1:end-1)'));                   % zwy
+  else                                                  % cross covariances Kxz
+    K = sqrt(sq_dist(x(:,1:end-1)',z(:,1:end-1)'));     % zwy
   end
 end
 
@@ -61,20 +61,20 @@ else                                                               % derivatives
         if i==1
             R = sin(K); K = 4*exp(-2*R.*R).*R.*cos(K).*K;
         else  % derivatives of the shift hyperparameters
-          dim = mod(i,2)+1;
-          ind_i = (x(:,2) ==i);
-          ind_ni = (x(:,2) ~=i);
-          B = zeros(length(x));
-          B(ind_ni,ind_i) = ones(sum(ind_ni),sum(ind_i));
-          B(ind_i,ind_ni) = -ones(sum(ind_i),sum(ind_ni)); 
- 
-          R = sin(K); 
-          A = repmat(x(:,dim) ,[1 length(x)]);
-          
-          K = 4.*exp(-2*R.*R).*R.*cos(K).*pi./p.*sign(A-A');
-          
-          K = B.*K;
-      end
+            dim = mod(i,2)+1;
+            ind_i = (x(:,2) ==i);
+            ind_ni = (x(:,2) ~=i);
+            B = zeros(length(x));
+            B(ind_ni,ind_i) = ones(sum(ind_ni),sum(ind_i));
+            B(ind_i,ind_ni) = -ones(sum(ind_i),sum(ind_ni));
+            
+            R = sin(K);
+            A = repmat(x(:,dim) ,[1 length(x)]);
+            
+            K = 4.*exp(-2*R.*R).*R.*cos(K).*pi./p.*sign(A-A');
+            
+            K = B.*K;
+        end
     else
         error('Unknown hyperparameter')
     end

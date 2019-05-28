@@ -34,7 +34,7 @@ if nargin<2, K = 'nL'; return; end                  % report number of parameter
 if nargin<3, z = []; end                                   % make sure, z exists
 xeqz = numel(z)==0; dg = strcmp(z,'diag') && numel(z)>0;        % determine mode
 
-nL = max(x(:,end));                                  % get number of labels
+nL = max(x(:,end));                                % get number of labels
 ell = exp(hyp(1));                                 % characteristic length scale
 shift = (hyp(2:end));                              % time shift hyp
 

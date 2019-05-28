@@ -15,7 +15,7 @@ function K = MTGP_covMaternisoU(d, hyp, x, z, i)
 %
 %   k(x^p,x^q) = f( sqrt(d)*r ) * exp(-sqrt(d)*r)
 %
-% with f(t)=1 for d=1, f(t)=1+t for d=3 and f(t)=1+t+t²/3 for d=5.
+% with f(t)=1 for d=1, f(t)=1+t for d=3 and f(t)=1+t+t^2/3 for d=5.
 % Here r is the distance sqrt((x^p-x^q)'*inv(P)*(x^p-x^q)), P is ell times
 % the unit matrix. The hyperparameters are:
 %

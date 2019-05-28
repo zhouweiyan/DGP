@@ -32,7 +32,7 @@ function K = MTGP_covCC_chol_nD_mask(mask,hyp,x, z, i)
 % by Robert Duerichen
 % 04/02/2014
 
-if nargin<3, K = ['sum([1:nL])']; return; end       % report number of parameters
+if nargin<3, K = 'sum([1:nL])'; return; end       % report number of parameters
 if nargin<4, z = []; end                                    % make sure, z exists
 xeqz = numel(z)==0; dg = strcmp(z,'diag') && numel(z)>0;    % determine mode
 
@@ -54,7 +54,7 @@ if exist('i','var')
 end
 
 nL = max(x(:,end));                                  % determine nLension
-cc = (hyp(1:sum([1:nL])));                                     % ini
+cc = (hyp(1:sum(1:nL)));                                     % ini
 
 % create index for hyp in matrix L
 cnt =1;

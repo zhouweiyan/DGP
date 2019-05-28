@@ -1,4 +1,4 @@
-function [K] = MTGP_covQPSisoUU_shift_mask(mask,hyp, x, z, i)
+function K = MTGP_covQPSisoUU_shift_mask(mask,hyp, x, z, i)
 
 % Stationary covariance function for a quasi-periodic function based on a 
 % multiplication of a Matern and Periodic function
@@ -49,14 +49,14 @@ if exist('i','var')
     end
 end
 
-nL = max(x(:,2));                                   % get number of labels
+nL = max(x(:,end));                                 % zwy; get number of labels
 ell = exp(hyp(1));                                  % characteristic length scale
 p   = exp(hyp(2));                                  % period 
 shift = (hyp(3:end));                               % time shift hyp
 
 %% perform shift
 for ii = 2:nL
-   x(x(:,2)== ii,1) = x(x(:,2)== ii,1)+shift(ii-1);
+   x(x(:,end)== ii,1) = x(x(:,end)== ii,1)+shift(ii-1);
    if ~isempty(z)
        z(z(:,2)== ii,1) = z(z(:,2)== ii,1)+shift(ii-1);
    end

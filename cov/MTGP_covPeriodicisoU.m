@@ -33,9 +33,9 @@ if dg                                                               % vector kxx
   K = zeros(size(x(:,1),1),1);
 else
   if xeqz                                                 % symmetric matrix Kxx
-    K = sqrt(sq_dist(x(:,1)'));
+    K = sqrt(sq_dist(x(:,1:end-1)'));                   % zwy
   else                                                   % cross covariances Kxz
-    K = sqrt(sq_dist(x(:,1)',z(:,1)'));
+    K = sqrt(sq_dist(x(:,1:end-1)',z(:,1:end-1)'));     % zwy
   end
 end
 

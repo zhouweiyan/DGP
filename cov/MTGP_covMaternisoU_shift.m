@@ -17,7 +17,7 @@ function K = MTGP_covMaternisoU_shift(d, hyp, x, z, i)
 %
 %   k(x^p,x^q) = f( sqrt(d)*r ) * exp(-sqrt(d)*r)
 %
-% with f(t)=1 for d=1, f(t)=1+t for d=3 and f(t)=1+t+t²/3 for d=5.
+% with f(t)=1 for d=1, f(t)=1+t for d=3 and f(t)=1+t+t^2/3 for d=5.
 % Here r is the distance sqrt(((x-theta_s)^p-(x-theta_s)^q)'*inv(P)* 
 % ((x-theta_s)^p-(x-theta_s)^q)), P is ell times the unit matrix.
 % The hyperparameters are:
@@ -44,7 +44,7 @@ switch d
   case 3, f = @(t) 1 + t;           df = @(t) t;
   case 5, f = @(t) 1 + t.*(1+t/3);  df = @(t) t.*(1+t)/3;       
 end
-          m = @(t,f) f(t).*exp(-t); dm = @(t,f) df(t).*exp(-t); 
+          m = @(t,f) f(t).*exp(-t); dm = @(t,f) df(t).*t.*exp(-t); 
 
 %% perform shift
 for ii = 2:nL
@@ -69,7 +69,8 @@ if nargin<5                                                        % covariances
   K = m(K,f);
 else                                                               % derivatives
   if i==1
-    K = K.*dm(K,f);
+%     K = K.*dm(K,f);
+    K = dm(K,f);    % zwy
   elseif i > 1 && i <= nL
       dim = mod(i,2)+1;
       ind_i = (x(:,2) ==i);

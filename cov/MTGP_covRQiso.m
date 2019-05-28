@@ -34,10 +34,10 @@ alpha = exp(hyp(3));
 if dg                                                               % vector kxx
   D2 = zeros(size(x(:,end-1),1),1);
 else
-  if xeqz                                                 % symmetric matrix Kxx
-    D2 = sq_dist(x(:,end-1)'/ell);
-  else                                                   % cross covariances Kxz
-    D2 = sq_dist(x(:,end-1)'/ell,z(:,end-1)'/ell);
+  if xeqz                                                   % symmetric matrix Kxx
+    D2 = sq_dist(x(:,1:end-1)'/ell);                        % zwy
+  else                                                      % cross covariances Kxz
+    D2 = sq_dist(x(:,1:end-1)'/ell,z(:,1:end-1)'/ell);      % zwy
   end
 end
 

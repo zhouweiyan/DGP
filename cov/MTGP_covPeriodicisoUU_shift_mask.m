@@ -51,13 +51,13 @@ end
 
 
 % n = size(x,1);
-nL = max(x(:,2));                                  % get number of labels
+nL = max(x(:,end));                                 % zwy: get number of labels
 p   = exp(hyp(1));                                  % period 
-shift = (hyp(2:end));                              % time shift hyp
+shift = (hyp(2:end));                               % time shift hyp
 
 %% perform shift
 for ii = 2:nL
-   x(x(:,2)== ii,1) = x(x(:,2)== ii,1)+shift(ii-1);
+   x(x(:,end)== ii,1) = x(x(:,end)== ii,1)+shift(ii-1);   % zwy
    if ~isempty(z)
        z(z(:,2)== ii,1) = z(z(:,2)== ii,1)+shift(ii-1);
    end
@@ -68,9 +68,9 @@ if dg                                                               % vector kxx
   K = zeros(size(x(:,1),1),1);
 else
   if xeqz                                                 % symmetric matrix Kxx
-    K = sqrt(sq_dist(x(:,1)'));
+    K = sqrt(sq_dist(x(:,1:end-1)'));
   else                                                   % cross covariances Kxz
-    K = sqrt(sq_dist(x(:,1)',z(:,1)'));
+    K = sqrt(sq_dist(x(:,1:end-1)',z(:,1:end-1)'));
   end
 end
 

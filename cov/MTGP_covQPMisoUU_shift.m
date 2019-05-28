@@ -1,4 +1,4 @@
-function [K] = MTGP_covQPMisoUU_shift_fix(d,hyp, x, z, i)
+function [K] = MTGP_covQPMisoUU_shift(d,hyp, x, z, i)
 
 % Stationary covariance function for a quasi-periodic function based on a 
 % multiplication of a Matern and Periodic function
@@ -29,7 +29,7 @@ if nargin<4, z = []; end                                    % make sure, z exist
 xeqz = numel(z)==0; dg = strcmp(z,'diag') && numel(z)>0;    % determine mode
 
 
-nL = max(x(:,2));                                   % get number of labels
+nL = max(x(:,end));                                 % zwy: get number of labels
 ell = exp(hyp(1));                                  % characteristic length scale
 p   = exp(hyp(2));                                  % period 
 shift = (hyp(3:end));                               % time shift hyp
@@ -42,13 +42,13 @@ switch d
   case 3, f = @(t) 1 + t;           df = @(t) t;
   case 5, f = @(t) 1 + t.*(1+t/3);  df = @(t) t.*(1+t)/3;
 end
-          m = @(t,f) f(t).*exp(-t); dm = @(t,f) df(t).*exp(-t);
+          m = @(t,f) f(t).*exp(-t); dm = @(t,f) df(t).*t.*exp(-t);     % zwy
 
 
 
 %% perform shift
 for ii = 2:nL
-   x(x(:,2)== ii,1) = x(x(:,2)== ii,1)+shift(ii-1);
+   x(x(:,end)== ii,1) = x(x(:,end)== ii,1)+shift(ii-1);             % zwy
    if ~isempty(z)
        z(z(:,2)== ii,1) = z(z(:,2)== ii,1)+shift(ii-1);
    end
@@ -82,31 +82,31 @@ else                                                               % derivatives
             K_m = m(K_m,f);
             R = sin(K_p); K = K_m.* 4.*exp(-2*R.*R).*R.*cos(K_p).*K_p;
         elseif i > 2 && i <= nL+1% derivatives of the shift hyperparameters
-          ind_i = (x(:,2) ==i-1);
-          ind_ni = (x(:,2) ~=i-1);
-          B = zeros(length(x));
-          B(ind_ni,ind_i) = ones(sum(ind_ni),sum(ind_i));
-          B(ind_i,ind_ni) = -ones(sum(ind_i),sum(ind_ni));
-          A = repmat(x(:,1) ,[1 length(x)]);
-          
-          switch d
-              case 1
-                dK_m = B.*dm(K_m,f)./(ell).*sign(A-A');
-              case 3
-                dK_m = B.*sqrt(d).*dm(K_m,f)./(ell).*sign(A-A');
-              case 5
-                dK_m = sqrt(d).*(K_m.^2 +K_m)./(3*ell).*exp(-K_m).*B.*sign(A-A'); 
-          end
-          
-          R = sin(K_p);
-          dK_p = B.*4.*exp(-2*R.*R).*R.*cos(K_p).*pi./p.*sign(A-A');
-          
-          K_p = sin(K_p); K_p = K_p.*K_p; K_p =   exp(-2*K_p);
-          
-          K_m = m(K_m,f);
-          
-          K = dK_m.*K_p + K_m.*dK_p;
-      end
+            ind_i = (x(:,2) ==i-1);
+            ind_ni = (x(:,2) ~=i-1);
+            B = zeros(length(x));
+            B(ind_ni,ind_i) = ones(sum(ind_ni),sum(ind_i));
+            B(ind_i,ind_ni) = -ones(sum(ind_i),sum(ind_ni));
+            A = repmat(x(:,1) ,[1 length(x)]);
+            
+            switch d
+                case 1
+                    dK_m = B.*dm(K_m,f)./(ell).*sign(A-A');
+                case 3
+                    dK_m = B.*sqrt(d).*dm(K_m,f)./(ell).*sign(A-A');
+                case 5
+                    dK_m = sqrt(d).*(K_m.^2 +K_m)./(3*ell).*exp(-K_m).*B.*sign(A-A');
+            end
+            
+            R = sin(K_p);
+            dK_p = B.*4.*exp(-2*R.*R).*R.*cos(K_p).*pi./p.*sign(A-A');
+            
+            K_p = sin(K_p); K_p = K_p.*K_p; K_p =   exp(-2*K_p);
+            
+            K_m = m(K_m,f);
+            
+            K = dK_m.*K_p + K_m.*dK_p;
+        end
     else
         error('Unknown hyperparameter')
     end

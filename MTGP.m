@@ -112,9 +112,9 @@ try                                                  % call the inference method
     end
   else
     if nargout==1
-      [post nlZ] = inf(hyp, mean, cov, lik, x, y); dnlZ = {};
+      [post, nlZ] = inf(hyp, mean, cov, lik, x, y); dnlZ = {};
     else
-      [post nlZ dnlZ] = inf(hyp, mean, cov, lik, x, y);
+      [post, nlZ, dnlZ] = inf(hyp, mean, cov, lik, x, y);
     end
   end
 catch

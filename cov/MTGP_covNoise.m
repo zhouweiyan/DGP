@@ -1,4 +1,4 @@
-function K = covNoise(hyp, x, z, i)
+function K = MTGP_covNoise(hyp, x, z, i)
 
 % Independent covariance function, ie "white noise", with specified variance.
 %
@@ -43,7 +43,7 @@ else
 end
 
 if nargin<4                                                        % covariances
-  K = diag(s2(x(:,2)))*K;
+  K = diag(s2(x(:,end)))*K;
 else                                                               % derivatives
   if i <= length(s2)
     K(diag(x(:,2)==i)) = 2.*s2(i);

@@ -1,4 +1,4 @@
-function K = MTGP_covMaternisoU_shift_mask(mask,d, hyp, x, z, i)
+function K = MTGP_covMaternisoU_shift_mask(d, mask,hyp, x, z, i)    % zwy change the order of d and mask
 
 % Matern covariance function with nu = d/2 and isotropic distance measure. For
 % d=1 the function is also known as the exponential covariance function or the 
@@ -64,7 +64,7 @@ switch d
   case 3, f = @(t) 1 + t;           df = @(t) t;
   case 5, f = @(t) 1 + t.*(1+t/3);  df = @(t) t.*(1+t)/3;       
 end
-          m = @(t,f) f(t).*exp(-t); dm = @(t,f) df(t).*exp(-t); 
+          m = @(t,f) f(t).*exp(-t); dm = @(t,f) df(t).*t.*exp(-t);  % zwy
 
 %% perform shift
 for ii = 2:nL
@@ -79,9 +79,9 @@ if dg                                                               % vector kxx
   K = zeros(size(x(:,1:end-1),1),1);
 else
   if xeqz                                                 % symmetric matrix Kxx
-    K = sqrt( sq_dist(sqrt(d)*x(:,1)'/ell) );
+    K = sqrt( sq_dist(sqrt(d)*x(:,1:end-1)'/ell) );     % zwy
   else                                                   % cross covariances Kxz
-    K = sqrt( sq_dist(sqrt(d)*x(:,1)'/ell,sqrt(d)*z(:,1)'/ell) );
+    K = sqrt( sq_dist(sqrt(d)*x(:,1:end-1)'/ell,sqrt(d)*z(:,1:end-1)'/ell) ); % zwy
   end
 end
 
