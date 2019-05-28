@@ -3,17 +3,6 @@
 % by Robert Duerichen
 % 18/11/2013
 
-path_gpml = 'E:\OneDrive - hnu.edu.cn\tools\matlabcourse\GPML_matlab\gpml-matlab-v4.2-2018-06-11';   % please insert here path of GPML Toolbox
-
-% add folders of MTGP and GPML Toolbox
-if ~isunix  % windows system
-    addpath(genpath('..\'));
-    addpath(genpath(path_gpml));
-else        % linux system
-    addpath(genpath('../'));
-    addpath(genpath(path_gpml));
-end
-
 clear; %clc
 % close all
 
@@ -21,7 +10,7 @@ clear; %clc
 load('test_data.mat');
 
 % please select one of the following cases to demonstrate the use of MTGPs: (1-5)
-MTGP_case = 4;
+MTGP_case = 2;
 % case1: 2 signals, assuming that they are uncorrelated, no optimization is
 %           done and k_t = SE cov. func
 % case2: 2 signals, assuming that they are uncorrelated but with further optimization
@@ -152,7 +141,6 @@ switch opt.cov_func
             covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU'}}; % feval(covfunc{:}); feval('MTGP_covCC_chol_nD')
             hyp.cov(1:num_cc_hyp) = opt.cc_hyp(1:num_cc_hyp);
             hyp.cov(num_cc_hyp+1) = log(sqrt(opt.se_hyp));
-
         case 2
             disp('Covariance Function: K = CC(l) x (Per_UU(t)*SE_U(t))');
             covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covPeriodicisoUU','MTGP_covSEisoU'}};
@@ -229,7 +217,7 @@ end
 vec_dim = 1:num_dim;
 L = zeros(num_dim,num_dim);
 for cnt_dim = 1:num_dim
-    L(cnt_dim,1:vec_dim(cnt_dim)) = [results.hyp.cov(sum(vec_dim(1:cnt_dim-1))+1:sum(vec_dim(1:cnt_dim-1))+vec_dim(cnt_dim))];
+    L(cnt_dim,1:vec_dim(cnt_dim)) = results.hyp.cov(sum(vec_dim(1:cnt_dim-1))+1:sum(vec_dim(1:cnt_dim-1))+vec_dim(cnt_dim));
 end
 
 results.K_f =  L*L';

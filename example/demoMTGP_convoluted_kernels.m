@@ -11,7 +11,7 @@ clear
 
 % please uncomment one of the following cases to demonstrate the use of 
 % MTGPs with convoluted kernels
-MTGP_case = 2;
+MTGP_case = 3;
 % case1: 3 signals assuming that they are uncorrelated but with further optimization
 %           and SE cov. func with isotropic length-scale hyperparameter for
 %           all tasks

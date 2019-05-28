@@ -12,17 +12,6 @@
 
 close all; clear;
 
-path_gpml = 'E:\OneDrive - hnu.edu.cn\tools\matlabcourse\GPML_matlab\gpml-matlab-v4.2-2018-06-11';                     % please insert here path of GPML Toolbox
-
-% add folders of MTGP and GPML Toolbox
-if ~isunix  % windows system
-    addpath(genpath('..\..\'));
-    addpath(genpath(path_gpml));
-else        % linux system
-    addpath(genpath('../../'));
-    addpath(genpath(path_gpml));
-end
-
 phase_shift = 0:0.05:1;         % define phase shift vector
 
 scale1 = 1;                     % y scaline of signal 1
@@ -133,7 +122,6 @@ for count = 1:length(phase_shift)
     results.s2 = reshape(results.s2,[opt.end-opt.start+1 num_dim]);
     results.p = exp(reshape(results.p,[opt.end-opt.start+1 num_dim]));
 
-
     %% compute RMSE for training and test data for each dimension
     for cnt_dim = 1:num_dim
         results.m(:,cnt_dim) = results.m(:,cnt_dim) + y_train_mean(cnt_dim);
@@ -152,7 +140,7 @@ for count = 1:length(phase_shift)
 
     % compute resulting K_f matrix
     
-    vec_dim = [1:num_dim];
+    vec_dim = 1:num_dim;
     L = zeros(num_dim,num_dim);
     for cnt_dim = 1:num_dim
         L(cnt_dim,1:vec_dim(cnt_dim)) = results.hyp.cov(sum(vec_dim(1:cnt_dim-1))+1:sum(vec_dim(1:cnt_dim-1))+vec_dim(cnt_dim));

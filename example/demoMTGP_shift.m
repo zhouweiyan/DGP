@@ -3,17 +3,6 @@
 % by Robert Duerichen
 % 31/01/2014
 
-path_gpml = 'E:\OneDrive - hnu.edu.cn\tools\matlabcourse\GPML_matlab\gpml-matlab-v4.2-2018-06-11';                     % please insert here path of GPML Toolbox
-
-% add folders of MTGP and GPML Toolbox
-if ~isunix  % windows system
-    addpath(genpath('..\'));
-    addpath(genpath(path_gpml));
-else        % linux system
-    addpath(genpath('../'));
-    addpath(genpath(path_gpml));
-end
-
 clear; %close all
 
 % please select one of the example cases for shifting the feature space: (1-3)
@@ -89,8 +78,8 @@ opt.num_rep = 1;                % number of trails for selecting hyp
 
 % init values for hyperparameter (if opt.random ~= 1)
 opt.se_hyp = 1;
-% opt.cc_hyp = [1 1 0 1 0 0];     % assumes that all signals are dependent
-opt.cc_hyp = [1 0 1 0 0 1];     % assumes that all signals are independent
+opt.cc_hyp = [1 1 0 1 0 0];     % assumes that all signals are dependent
+% opt.cc_hyp = [1 0 1 0 0 1];     % assumes that all signals are independent
 opt.noise_lik = 0.1;
 opt.shift_hyp = [0 0];
 
@@ -123,14 +112,22 @@ end
 switch opt.cov_func
     case 1
         disp('Covariance Function: K = CC(l) x (SE_U(t))');
-        covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU'}};
+%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU'}};
+        covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covMaternisoU',3}}};
         hyp.cov(1:num_cc_hyp) = opt.cc_hyp(1:num_cc_hyp);
         hyp.cov(num_cc_hyp+1) = log(sqrt(opt.se_hyp));
 
     case 2
         disp('Covariance Function: K = CC(l) x (SE_U_shift(t))');
-        covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU_shift'}};
-
+%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU_shift'}};
+%         covfunc = {'MTGP_covProd',{{'MTGP_covCC_chol_nD_mask',ones(1,9)},'MTGP_covSEisoU_shift'}};
+%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covMaternisoU_shift',3}}}; % wrong, minimize doesn't work
+%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covMaternisoU_shift_mask',3,ones(1,9)}}};  % wrong
+%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covPeriodicisoUU_shift'}};                  % wrong
+%         covfunc = {'MTGP_covProd', {'MTGP_covCC_chol_nD',{'MTGP_covPeriodicisoUU_shift_mask',ones(1,9)}}};% wrong
+%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covQPSisoUU_shift'}}}; hyp.cov(num_cc_hyp+4) = .1;
+%         covfunc = {'MTGP_covProd', {'MTGP_covCC_chol_nD',{'MTGP_covQPSisoUU_shift_mask',ones(1,10)}}}; hyp.cov(num_cc_hyp+4) = .1;
+        covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covRQiso'}};
         hyp.cov(1:num_cc_hyp) = opt.cc_hyp(1:num_cc_hyp);
         hyp.cov(num_cc_hyp+1) = log(opt.se_hyp);
         hyp.cov(num_cc_hyp+2) = opt.shift_hyp(1);
