@@ -65,23 +65,23 @@ for ii = 2:nL
 end
 
 % precompute squared distances
-if dg                                                               % vector kxx
+if dg                                                   % vector kxx
   K = zeros(size(x(:,1:end-1),1),1);
 else
-  if xeqz                                                 % symmetric matrix Kxx
-    K = sq_dist(x(:,1)'/ell);
-  else                                                   % cross covariances Kxz
-    K = sq_dist(x(:,1)'/ell,z(:,1)'/ell);
+  if xeqz                                               % symmetric matrix Kxx
+    K = sq_dist(x(:,1:end-1)'/ell);                     % zwy
+  else                                                  % cross covariances Kxz
+    K = sq_dist(x(:,1:end-1)'/ell,z(:,1:end-1)'/ell);   % zwy
   end
 end
 
-if nargin<5                                                        % covariances
+if nargin<5                                             % covariances
   K = exp(-K/2);
-else                                                               % derivatives
+else                                                    % derivatives
   if i<=nL
       if i == 1 % derivative of the x-scaling hyperparameter
           K = exp(-K/2).*K;
-      else  % derivatives of the shift hyperparameters
+      else      % derivatives of the shift hyperparameters
           ind_i = (x(:,2) ==i);
           ind_ni = (x(:,2) ~=i);
           B = zeros(length(x));

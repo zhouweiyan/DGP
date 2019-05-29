@@ -50,10 +50,10 @@ end
 if dg                                                               % vector kxx
   K = zeros(size(x(:,1:end-1),1),1);
 else
-  if xeqz                                                 % symmetric matrix Kxx
-    K = sq_dist(x(:,1)'/ell);
-  else                                                   % cross covariances Kxz
-    K = sq_dist(x(:,1)'/ell,z(:,1)'/ell);
+  if xeqz                                               % symmetric matrix Kxx
+    K = sq_dist(x(:,1:end-1)'/ell);                     % zwy
+  else                                                  % cross covariances Kxz
+    K = sq_dist(x(:,1:end-1)'/ell,z(:,1:end-1)'/ell);   % zwy
   end
 end
 

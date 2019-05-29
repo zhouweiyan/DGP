@@ -1,4 +1,4 @@
-function [K] = MTGP_covQPMisoUU_shift_fix(mask,d,hyp, x, z, i)
+function K = MTGP_covQPMisoUU_shift_mask(mask,d,hyp, x, z, i)
 
 % Stationary covariance function for a quasi-periodic function based on a 
 % multiplication of a Matern and Periodic function

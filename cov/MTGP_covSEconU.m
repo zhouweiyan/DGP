@@ -32,7 +32,7 @@ if nargin<2, K = 'nL'; return; end                          % report number of p
 if nargin<3, z = []; end                                    % make sure, z exists
 xeqz = numel(z)==0; dg = strcmp(z,'diag') && numel(z)>0;    % determine mode
 
-nL = max(x(:,2));                                           % determine dimension
+nL = max(x(:,end));                                         % zwy; determine dimension
 
 ell = exp(hyp(1:nL));                                       % characteristic length scale
 
