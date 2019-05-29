@@ -139,11 +139,12 @@ switch opt.cov_func
         case 1
             disp('Covariance Function: K = CC(l) x (SE_U(t))');
             covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU'}}; % feval(covfunc{:}); feval('MTGP_covCC_chol_nD')
+%             covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEconU'}};hyp.cov(num_cc_hyp+2) = log(opt.se_hyp);
             hyp.cov(1:num_cc_hyp) = opt.cc_hyp(1:num_cc_hyp);
             hyp.cov(num_cc_hyp+1) = log(sqrt(opt.se_hyp));
         case 2
             disp('Covariance Function: K = CC(l) x (Per_UU(t)*SE_U(t))');
-            covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covPeriodicisoUU','MTGP_covSEisoU'}};
+            covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covPeriodicisoUU','MTGP_covSEisoU'}}; 
             hyp.cov(1:num_cc_hyp) = opt.cc_hyp(1:num_cc_hyp);
             hyp.cov(num_cc_hyp+1) = log(opt.per_hyp);
             hyp.cov(num_cc_hyp+2) = log(opt.se_hyp);

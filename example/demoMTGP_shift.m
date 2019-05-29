@@ -112,30 +112,34 @@ end
 switch opt.cov_func
     case 1
         disp('Covariance Function: K = CC(l) x (SE_U(t))');
-%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU'}};
-        covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covMaternisoU',3}}};
+        covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU'}};
+%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covMaternisoU',3}}};
         hyp.cov(1:num_cc_hyp) = opt.cc_hyp(1:num_cc_hyp);
         hyp.cov(num_cc_hyp+1) = log(sqrt(opt.se_hyp));
 
     case 2
         disp('Covariance Function: K = CC(l) x (SE_U_shift(t))');
-%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU_shift'}};
 %         covfunc = {'MTGP_covProd',{{'MTGP_covCC_chol_nD_mask',ones(1,9)},'MTGP_covSEisoU_shift'}};
 %         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covMaternisoU_shift',3}}}; % wrong, minimize doesn't work
 %         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covMaternisoU_shift_mask',3,ones(1,9)}}};  % wrong
 %         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covPeriodicisoUU_shift'}};                  % wrong
-%         covfunc = {'MTGP_covProd', {'MTGP_covCC_chol_nD',{'MTGP_covPeriodicisoUU_shift_mask',ones(1,9)}}};% wrong
+%         covfunc = {'MTGP_covProd', {'MTGP_covCC_chol_nD',{'MTGP_covPeriodicisoUU_shift_mask',ones(1,3)}}};% wrong
 %         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covQPSisoUU_shift'}}}; hyp.cov(num_cc_hyp+4) = .1;
 %         covfunc = {'MTGP_covProd', {'MTGP_covCC_chol_nD',{'MTGP_covQPSisoUU_shift_mask',ones(1,10)}}}; hyp.cov(num_cc_hyp+4) = .1;
-        covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covRQiso'}};
-        hyp.cov(1:num_cc_hyp) = opt.cc_hyp(1:num_cc_hyp);
-        hyp.cov(num_cc_hyp+1) = log(opt.se_hyp);
-        hyp.cov(num_cc_hyp+2) = opt.shift_hyp(1);
-        hyp.cov(num_cc_hyp+3) = opt.shift_hyp(2);
+%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covRQiso'}};
+%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covRQisoU'}}; % comment out hyp.cov(num_cc_hyp+3)
+%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU_shift'}};
+%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEconU'}};
+%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covSEisoU_shift_mask',ones(1,3)}}};
+        covfunc = {'MTGP_covSum', {'MTGP_covRQisoU','MTGP_covSEiso'}};  % comment out hyp.cov
+        hyp.cov = log([1;0.5;3;2]);
+%         hyp.cov(1:num_cc_hyp) = opt.cc_hyp(1:num_cc_hyp);
+%         hyp.cov(num_cc_hyp+1) = log(opt.se_hyp);
+%         hyp.cov(num_cc_hyp+2) = opt.shift_hyp(1);
+%         hyp.cov(num_cc_hyp+3) = opt.shift_hyp(2);
     case 3
         disp('Covariance Function: K = CC(l) x (SE_U_shift_nD(t))');
         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU_shift_nD'}};
-
         hyp.cov(1:num_cc_hyp) = opt.cc_hyp(1:num_cc_hyp);
         hyp.cov(num_cc_hyp+1) = log(opt.se_hyp);
         hyp.cov(num_cc_hyp+2) = opt.shift_hyp(1);
