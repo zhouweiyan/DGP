@@ -1,6 +1,7 @@
 function K = MTGP_covSEiso(hyp, x, z, i)
 
 % Squared Exponential covariance function with isotropic distance measure. 
+										  
 %
 % Based on the covSEiso.m function of the GPML Toolbox - 
 %   with the following changes:
@@ -15,8 +16,13 @@ function K = MTGP_covSEiso(hyp, x, z, i)
 % where the P matrix is ell^2 times the unit matrix and sf^2 is the signal
 % variance. The hyperparameters are:
 %
+				  
+					
+ 
+																		   
+ 
 % hyp = [ log(ell);
-%           log(sqrt(sf2))]
+%           log(sf)]
 %
 % by Robert Duerichen
 % 04/02/2014
