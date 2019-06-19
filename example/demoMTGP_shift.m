@@ -6,7 +6,7 @@
 clear; %close all
 
 % please select one of the example cases for shifting the feature space: (1-3)
-MTGP_case = 2;
+MTGP_case = 3;
 % case1: 3 signals which are phase shifted to each other, modelled by a 
 %           normal MTGP with k_t = SE covariance function
 %
@@ -128,15 +128,15 @@ switch opt.cov_func
 %         covfunc = {'MTGP_covProd', {'MTGP_covCC_chol_nD',{'MTGP_covQPSisoUU_shift_mask',ones(1,10)}}}; hyp.cov(num_cc_hyp+4) = .1;
 %         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covRQiso'}};
 %         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covRQisoU'}}; % comment out hyp.cov(num_cc_hyp+3)
-%         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU_shift'}};
+        covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU_shift'}};
 %         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEconU'}};
 %         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covSEisoU_shift_mask',ones(1,3)}}};
-        covfunc = {'MTGP_covSum', {'MTGP_covRQisoU','MTGP_covSEiso'}};  % comment out hyp.cov
-        hyp.cov = log([1;0.5;3;2]);
-%         hyp.cov(1:num_cc_hyp) = opt.cc_hyp(1:num_cc_hyp);
-%         hyp.cov(num_cc_hyp+1) = log(opt.se_hyp);
-%         hyp.cov(num_cc_hyp+2) = opt.shift_hyp(1);
-%         hyp.cov(num_cc_hyp+3) = opt.shift_hyp(2);
+%         covfunc = {'MTGP_covSum', {'MTGP_covRQisoU','MTGP_covSEiso'}};  % comment out hyp.cov
+%         hyp.cov = log([1;0.5;3;2]);
+        hyp.cov(1:num_cc_hyp) = opt.cc_hyp(1:num_cc_hyp);
+        hyp.cov(num_cc_hyp+1) = log(opt.se_hyp);
+        hyp.cov(num_cc_hyp+2) = opt.shift_hyp(1);
+        hyp.cov(num_cc_hyp+3) = opt.shift_hyp(2);
     case 3
         disp('Covariance Function: K = CC(l) x (SE_U_shift_nD(t))');
         covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU_shift_nD'}};

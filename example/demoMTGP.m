@@ -69,6 +69,7 @@ opt.num_rep = 2;                % number of trails for selecting hyp
 opt.per_hyp = 6;
 opt.se_hyp = 1;
 opt.cc_hyp = [1 0 1 0 0 1];     % assumes that all signals are independent
+% opt.cc_hyp = [1 1 0 1 0 0];
 opt.noise_lik = 0.1;
 opt.noise_hyp = 0.001;
 
@@ -109,26 +110,26 @@ end
 change_order=0;
 if change_order == 1
     x_train = [t(opt.training_data{1},1), ...
-        3*ones(length(opt.training_data{1}),1)];
+        2*ones(length(opt.training_data{1}),1)];
     
     y_train_mean(1) = mean(y(opt.training_data{1},1));
     y_train = y(opt.training_data{1},1)-y_train_mean(1);
     
-    x_test = [t(opt.start:opt.end) 3*ones(opt.end-opt.start+1,1)];
+    x_test = [t(opt.start:opt.end) 2*ones(opt.end-opt.start+1,1)];
     y_test = y(opt.start:opt.end,1)-y_train_mean(1);    % the true value subtract the mean
     
     
     for cnt_dim = 2:num_dim
         x_train = [x_train(:,1) x_train(:,2);...    % concatenate the x of the training datasets
             t(opt.training_data{cnt_dim},1) ...
-            ones(length(opt.training_data{cnt_dim}),1)*(4-cnt_dim)];
+            ones(length(opt.training_data{cnt_dim}),1)*(3-cnt_dim)];
         
         y_train_mean(cnt_dim) = mean(y(opt.training_data{cnt_dim},cnt_dim));
         y_train = [y_train; y(opt.training_data{cnt_dim},cnt_dim)-...
             y_train_mean(cnt_dim)];                 % concatenate the y of the training datasets
         
         x_test = [x_test(:,1) x_test(:,2);...       % concatenate the x of the testing datasets
-            t(opt.start:opt.end) ones(opt.end-opt.start+1,1)*(4-cnt_dim)];
+            t(opt.start:opt.end) ones(opt.end-opt.start+1,1)*(3-cnt_dim)];
         y_test = [y_test; y(opt.start:opt.end,cnt_dim)-y_train_mean(cnt_dim)];  % concatenate the y of the testing datasets
     end
 end
