@@ -10,7 +10,7 @@ clear; %clc
 load('test_data.mat');
 
 % please select one of the following cases to demonstrate the use of MTGPs: (1-5)
-MTGP_case = 2;
+MTGP_case = 3;
 % case1: 2 signals, assuming that they are uncorrelated, no optimization is
 %           done and k_t = SE cov. func
 % case2: 2 signals, assuming that they are uncorrelated but with further optimization
@@ -140,7 +140,12 @@ switch opt.cov_func
         case 1
             disp('Covariance Function: K = CC(l) x (SE_U(t))');
             covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEisoU'}}; % feval(covfunc{:}); feval('MTGP_covCC_chol_nD')
+%             covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEiso'}};hyp.cov(num_cc_hyp+2) = log(opt.se_hyp);
+%             covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covRQard'}};hyp.cov(num_cc_hyp+2:num_cc_hyp+3)=log([1;2]);
 %             covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD','MTGP_covSEconU'}};hyp.cov(num_cc_hyp+2) = log(opt.se_hyp);
+%             covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covMaternard',3}}};hyp.cov(num_cc_hyp+2) = log(opt.se_hyp);
+%             covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covPPard',3}}};hyp.cov(num_cc_hyp+2) = log(opt.se_hyp);
+%             covfunc = {'MTGP_covProd',{'MTGP_covCC_chol_nD',{'MTGP_covPPiso',3}}};hyp.cov(num_cc_hyp+2) = log(opt.se_hyp);
             hyp.cov(1:num_cc_hyp) = opt.cc_hyp(1:num_cc_hyp);
             hyp.cov(num_cc_hyp+1) = log(sqrt(opt.se_hyp));
         case 2
