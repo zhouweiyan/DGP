@@ -1,4 +1,4 @@
-# DGP
+# MTGP/DGP
 
 A dependent Gaussian process toolbox
 
