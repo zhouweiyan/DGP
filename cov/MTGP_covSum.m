@@ -11,6 +11,9 @@ function K = MTGP_covSum(cov, hyp, x, z, i)
 % 04/02/2014
 %
 % See also COVFUNCTIONS.M.
+%
+% 2D regression
+% zhouweiyan 20190726
 
 if numel(cov)==0, error('We require at least one summand.'), end
 for ii = 1:numel(cov)                        % iterate over covariance functions
@@ -23,11 +26,18 @@ if nargin<3                                        % report number of parameters
 end
 if nargin<4, z = []; end     % make sure, z exists
 
-[n,D] = size(x);
+n = size(x,1); D = size(x,2)-1;
+
 %% these lines have to be added to be able to use Lab_covCC_chol_nD function
 if size(x,2) > 1
-    nL = max(x(:,end));
-end
+    % zwy
+    xeqz = numel(z)==0;
+    if xeqz
+        nL = max(x(:,end));                                  % determine nLension
+    else
+        nL = max([x(:,end);z(:,end)]);
+    end
+end  
 
 v = [];               % v vector indicates to which covariance parameters belong
 for ii = 1:length(cov), v = [v repmat(ii, 1, eval(char(j(ii))))]; end

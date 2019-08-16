@@ -35,7 +35,8 @@ if nargin<2, K = 'sum([1:nL])'; return; end       % report number of parameters
 if nargin<3, z = []; end                                    % make sure, z exists
 xeqz = numel(z)==0; dg = strcmp(z,'diag') && numel(z)>0;    % determine mode
 
-nL = max(x(:,end));                                  % determine nLension
+nL = max(x(:,end)); 
+
 cc = (hyp(1:sum(1:nL)));                                     % ini
 
 % create index for hyp in matrix L

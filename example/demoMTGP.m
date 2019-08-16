@@ -10,7 +10,7 @@ clear; %clc
 load('test_data.mat');
 
 % please select one of the following cases to demonstrate the use of MTGPs: (1-5)
-MTGP_case = 3;
+MTGP_case = 2;
 % case1: 2 signals, assuming that they are uncorrelated, no optimization is
 %           done and k_t = SE cov. func
 % case2: 2 signals, assuming that they are uncorrelated but with further optimization
@@ -63,7 +63,7 @@ opt.show = 1;                   % show result plot
 opt.start = 1;                  % start index for prediction
 opt.end = 150;                  % end index for prediction
 opt.random = 0;                 % if 1 - hyp for correlation and SE will set randomly
-opt.num_rep = 2;                % number of trails for selecting hyp
+opt.num_rep = 1;                % number of trails for selecting hyp
 
 % init values for hyperparameter (if opt.random ~= 1)
 opt.per_hyp = 6;
