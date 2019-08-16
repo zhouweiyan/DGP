@@ -1,6 +1,6 @@
-# mtgp-v1.5
+# DGP
 
-MTGP - A multi-task gaussian process
+A dependent Gaussian process toolbox
 
 Enable the 2-D usage
 
